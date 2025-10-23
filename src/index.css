@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* font & base dark */
+:root {
+  color-scheme: white;
+}
+html {
+  scroll-behavior: smooth;
+}
