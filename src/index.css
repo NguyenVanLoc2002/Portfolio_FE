@@ -1,10 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-/* font & base dark */
-:root {
-  color-scheme: white;
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
 }
-html {
-  scroll-behavior: smooth;
+
+@layer utilities {
+  /* Custom gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-emerald-300 via-cyan-300 to-blue-300 bg-clip-text text-transparent;
+  }
+
+  /* Glow effect */
+  .glow-emerald {
+    @apply shadow-lg shadow-emerald-500/20;
+  }
+
+  .glow-cyan {
+    @apply shadow-lg shadow-cyan-500/20;
+  }
 }
