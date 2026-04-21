@@ -1,16 +1,27 @@
 export const profile = {
-  name: "Hi Ho",
-  title: "Java Backend Developer",
-  bio: "Passionate about building scalable, high-performance backend systems with clean code and best practices.",
-  experience: "1 year",
+  name: "Lộc Nguyễn",
+  title: "Java Developer",
+  experience: "2+ years",
   projects: 3,
-  description: `I'm a Java Backend Developer with 1 year of professional experience specializing in building enterprise-grade applications. 
-  My expertise lies in designing and implementing microservices architectures, optimizing database performance, and creating robust REST APIs.
-  I'm passionate about clean code, system design, and continuous learning.`,
-  highlights: [
-    "Designed and deployed microservices architecture for e-commerce platform",
-    "Optimized database queries reducing response time by 40%",
-    "Implemented real-time data processing with Kafka",
-    "Led backend development for 3 major projects",
+  location: "Ho Chi Minh City, Vietnam",
+  email: "nguyenvanloc6756@gmail.com",
+  github: "https://github.com/NguyenVanLoc2002",
+  linkedin: "https://www.linkedin.com/in/loc-van-nguyen-2a4661314/",
+  description:
+    "I design and build backend services with a strong focus on maintainability, API quality, and long-term product growth. My work is centered on Java, Spring-based systems, and practical engineering decisions that keep delivery reliable as complexity increases.",
+  bio: [
+    "I work on backend systems that need clear service boundaries, dependable APIs, and code that remains easy to extend as product requirements evolve.",
+    "My recent experience has been focused on Java, Spring Boot, relational databases, and backend workflows where reliability, readability, and scalability matter in day-to-day delivery.",
   ],
-}
+  highlights: [
+    "Built backend services for product and internal operations workflows",
+    "Improved maintainability through clearer service design and stronger API contracts",
+    "Contributed in cross-functional environments with product, QA, and frontend teams",
+  ],
+  strengths: [
+    "Java and Spring Boot service development",
+    "API design and backend architecture",
+    "Database modeling and query optimization",
+    "Maintainable delivery for product teams",
+  ],
+};

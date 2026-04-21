@@ -1,27 +1,50 @@
-/* postcss */
 @import "tailwindcss";
 @source "./index.html" "./src/**/*.{ts,tsx,js,jsx}";
 
 @layer base {
-  body {
-    @apply bg-slate-950 text-slate-100;
+  :root {
+    color-scheme: dark;
   }
 
   html {
     scroll-behavior: smooth;
   }
+
+  body {
+    @apply min-h-screen bg-slate-950 text-slate-100 antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(16, 185, 129, 0.12), transparent 26%),
+      radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 20%),
+      linear-gradient(180deg, #020617 0%, #0b1120 54%, #0f172a 100%);
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  ::selection {
+    @apply bg-emerald-300/30 text-white;
+  }
 }
 
-@layer utilities {
-  .gradient-text {
-    @apply bg-gradient-to-r from-emerald-300 via-cyan-300 to-blue-300
-           bg-clip-text text-transparent;
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-[1180px] px-5 sm:px-6 lg:px-8;
   }
 
-  .glow-emerald {
-    @apply shadow-lg shadow-emerald-500/20;
+  .section-spacing {
+    @apply py-18 sm:py-24;
   }
-  .glow-cyan {
-    @apply shadow-lg shadow-cyan-500/20;
+
+  .surface-card {
+    @apply rounded-[28px] border border-white/8 bg-slate-900/55 shadow-[0_24px_80px_rgba(2,6,23,0.28)] backdrop-blur-sm;
+  }
+
+  .surface-card-strong {
+    @apply rounded-[32px] border border-white/10 bg-slate-900/72 shadow-[0_28px_90px_rgba(2,6,23,0.36)] backdrop-blur-md;
+  }
+
+  .section-divider {
+    @apply border-t border-white/6;
   }
 }

@@ -1,125 +1,114 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { NavLink } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
 
 const navItems = [
   { label: "Home", to: "/" },
-  { label: "Projects", to: "/project" },
+  { label: "Projects", to: "/projects" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
-]
+];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-slate-950/80 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+    <motion.header
+      initial={prefersReducedMotion ? false : { opacity: 0, y: -14 }}
+      animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className={`sticky top-0 z-50 border-b transition duration-300 ${
+        isScrolled
+          ? "border-white/8 bg-slate-950/84 backdrop-blur-xl"
+          : "border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-2 group">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300" />
-            <div className="relative bg-slate-950 px-3 py-1.5 rounded-lg">
-              <span className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                Hi.
-              </span>
+      <div className="page-shell flex h-24 items-center justify-between gap-4">
+        <motion.div
+          whileHover={
+            prefersReducedMotion ? undefined : { y: -1, transition: { duration: 0.18 } }
+          }
+        >
+          <NavLink to="/" className="flex items-center gap-4">
+            <span className="flex h-16 w-16 items-center justify-center rounded-[22px] border border-emerald-300/20 bg-emerald-300/8 text-2xl font-semibold text-emerald-200 shadow-[0_12px_32px_rgba(16,185,129,0.08)]">
+              H
+            </span>
+            <div>
+              <p className="text-[15px] font-semibold text-white">Lộc Nguyễn</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.34em] text-slate-400">
+                Java Developer
+              </p>
             </div>
-          </div>
-          <span className="hidden sm:inline text-sm font-semibold text-white">Portfolio</span>
-        </NavLink>
+          </NavLink>
+        </motion.div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
-          {navItems.map(({ to, label }) => (
+        <nav className="hidden items-center gap-2 rounded-full border border-white/8 bg-white/[0.035] px-2 py-2 md:flex">
+          {navItems.map((item) => (
             <NavLink
-              key={to}
-              to={to}
-              end={to === "/"}
+              key={item.to}
+              to={item.to}
+              end={item.to === "/"}
               className={({ isActive }) =>
-                `relative px-4 py-2 text-sm font-medium transition-colors ${
-                  isActive ? "text-emerald-400" : "text-slate-300 hover:text-white"
+                `rounded-full px-5 py-2.5 text-sm font-medium transition ${
+                  isActive
+                    ? "bg-white/10 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                    : "text-slate-300 hover:bg-white/5 hover:text-white"
                 }`
               }
             >
-              {({ isActive }) => (
-                <>
-                  {label}
-                  {isActive && (
-                    <motion.div
-                      layoutId="navbar-underline"
-                      className="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-emerald-400 to-cyan-400"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </>
-              )}
+              {item.label}
             </NavLink>
           ))}
         </nav>
 
-        {/* Mobile Menu Button */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 group"
+          type="button"
+          onClick={() => setIsOpen((open) => !open)}
+          className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 md:hidden"
+          aria-expanded={isOpen}
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
         >
-          <motion.span
-            animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-            className="w-6 h-0.5 bg-white rounded-full"
-          />
-          <motion.span animate={isOpen ? { opacity: 0 } : { opacity: 1 }} className="w-6 h-0.5 bg-white rounded-full" />
-          <motion.span
-            animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-            className="w-6 h-0.5 bg-white rounded-full"
-          />
+          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-slate-950/95 backdrop-blur-md border-b border-white/5"
-          >
-            <nav className="flex flex-col gap-2 px-4 py-4">
-              {navItems.map(({ to, label }) => (
-                <NavLink
-                  key={to}
-                  to={to}
-                  end={to === "/"}
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      isActive
-                        ? "bg-emerald-400/10 text-emerald-400"
-                        : "text-slate-300 hover:text-white hover:bg-white/5"
-                    }`
-                  }
-                >
-                  {label}
-                </NavLink>
-              ))}
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  )
+      {isOpen ? (
+        <div className="border-t border-white/8 bg-slate-950/96 md:hidden">
+          <nav className="page-shell flex flex-col gap-2 py-4">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === "/"}
+                className={({ isActive }) =>
+                  `rounded-2xl px-4 py-3 text-sm font-medium ${
+                    isActive
+                      ? "bg-white/10 text-white"
+                      : "text-slate-300 hover:bg-white/5 hover:text-white"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+      ) : null}
+    </motion.header>
+  );
 }
